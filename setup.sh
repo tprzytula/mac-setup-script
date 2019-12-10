@@ -6,18 +6,18 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until ".setup" has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-echo "[1/10] Installing homebrew"
+echo "[1/12] Installing homebrew"
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 brew update
 
-echo "[2/10] Installing yarn"
+echo "[2/12] Installing yarn"
 curl -o- -L https://yarnpkg.com/install.sh | bash
 
-echo "[3/10] Installing node (using n-install)"
+echo "[3/12] Installing node (using n-install)"
 curl -L https://git.io/n-install | bash
 
-echo "[4/10] Generating an RSA token for GitHub"
+echo "[4/12] Generating an RSA token for GitHub"
 mkdir -p ~/.ssh
 touch ~/.ssh/config
 ssh-keygen -t rsa -b 4096 -C "t.przytula.dev@gmail.com"
@@ -25,25 +25,40 @@ echo "Host *\n AddKeysToAgent yes\n UseKeychain yes\n IdentityFile ~/.ssh/id_rsa
 eval "$(ssh-agent -s)"
 echo "run 'pbcopy < ~/.ssh/id_rsa.pub' and paste that into GitHub"
 
-echo "[5/10] Install web browsers"
+echo "[5/12] Install web browsers"
 brew cask install google-chrome firefox brave-browser
 
-echo "[6/10] Install Spotify"
+echo "[6/12] Install Spotify"
 brew cask install spotify
 
-echo "[7/10] Install iTerm2"
+echo "[7/12] Install iTerm2"
 brew cask install iterm2
 
-echo "[8/10] Install NVM"
+echo "[8/12] Install NVM"
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.1/install.sh | bash
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm'
 nvm install --lts
  
-echo "[9/10] Install Visual Studio Code"
+echo "[9/12] Install Visual Studio Code"
 brew cask install visual-studio-code
 
-echo "[10/10] System configuration"
+echo "[10/12] Install Meteor"
+curl https://install.meteor.com/ | sh
+
+echo "[11/12] Install Java & Android Studio"
+brew cask install java
+brew cask install homebrew/cask-versions/adoptopenjdk8
+brew cask install android-sdk
+brew cask install android-ndk
+brew cask install android-platform-tools
+
+export ANDROID_NDK_HOME=/usr/local/share/android-ndk
+export ANDROID_SDK_ROOT=/usr/local/share/android-sdk
+
+brew cask install android-studio
+
+echo "[12/12] System configuration"
 # Set standby delay to 24 hours (default is 1 hour)
 sudo pmset -a standbydelay 86400
 
