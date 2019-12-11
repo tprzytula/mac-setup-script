@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Inspiration - https://github.com/kentcdodds/dotfiles
+
 # Ask for a root password
 sudo -v
 
